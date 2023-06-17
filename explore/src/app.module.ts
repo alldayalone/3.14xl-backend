@@ -12,32 +12,15 @@ import * as Joi from '@hapi/joi';
   imports: [
     ConfigModule.forRoot({
       validationSchema: Joi.object({
-        MONGO_USERNAME: Joi.string().required(),
-        MONGO_PASSWORD: Joi.string().required(),
-        MONGO_DATABASE: Joi.string().required(),
-        MONGO_HOST: Joi.string().required(),
-        MONGO_PORT: Joi.string().required(),
+        MONGO_URI: Joi.string().required(),
       }),
     }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => {
-        const username = configService.get('MONGO_USERNAME');
-        console.log('username', username);
-        const password = configService.get('MONGO_PASSWORD');
-        console.log('password', password);
-        const database = configService.get('MONGO_DATABASE');
-        const host = configService.get('MONGO_HOST');
-        console.log('host', host);
-        const port = configService.get('MONGO_PORT');
-        console.log(
-          'portffffff',
-          `mongodb://${username}:${password}@${host}:${port}`,
-        );
-
         return {
-          uri: `mongodb://${host}:${port}`,
-          dbName: database,
+          uri: configService.get('MONGO_URI')
+          // dbName: database,
         };
       },
       inject: [ConfigService],
