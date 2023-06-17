@@ -19,8 +19,8 @@ import * as Joi from '@hapi/joi';
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => {
         return {
-          uri: configService.get('MONGO_URI')
-          // dbName: database,
+          uri: configService.get('MONGO_URI'),
+          dbName: 'test',
         };
       },
       inject: [ConfigService],
